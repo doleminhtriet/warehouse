@@ -59,8 +59,8 @@ include "header.php";
 			include 'db.php';
 			$product_id = $_GET['p'];
 
-			$sql = " SELECT * FROM products ";
-			$sql = " SELECT * FROM products WHERE product_id = $product_id";
+			$sql = " SELECT * FROM Product ";
+			$sql = " SELECT * FROM Product WHERE ProductID = $product_id";
 			if (!$con) {
 				die("Connection failed: " . mysqli_connect_error());
 			}
@@ -74,19 +74,19 @@ include "header.php";
                                 <div class="col-md-5 col-md-push-2">
                                 <div id="product-main-img">
                                     <div class="product-preview">
-                                        <img src="product_images/' . $row['product_image'] . '" alt="">
+                                        <img src="data:image/jpeg;base64,' . $row['ProductImage'] . '" alt="">
                                     </div>
 
                                     <div class="product-preview">
-                                        <img src="product_images/' . $row['product_image'] . '" alt="">
+                                        <img src="data:image/jpeg;base64,' . $row['ProductImage'] . '" alt="">
                                     </div>
 
                                     <div class="product-preview">
-                                        <img src="product_images/' . $row['product_image'] . '" alt="">
+                                        <img src="data:image/jpeg;base64,' . $row['ProductImage'] . '" alt="">
                                     </div>
 
                                     <div class="product-preview">
-                                        <img src="product_images/' . $row['product_image'] . '" alt="">
+                                        <img src="data:image/jpeg;base64,' . $row['ProductImage'] . '" alt="">
                                     </div>
                                 </div>
                             </div>
@@ -94,19 +94,19 @@ include "header.php";
                                 <div class="col-md-2  col-md-pull-5">
                                 <div id="product-imgs">
                                     <div class="product-preview">
-                                        <img src="product_images/' . $row['product_image'] . '" alt="">
+                                        <img src="data:image/jpeg;base64,' . $row['ProductImage'] . '" alt="">
                                     </div>
 
                                     <div class="product-preview">
-                                        <img src="product_images/' . $row['product_image'] . '" alt="">
+                                        <img src="data:image/jpeg;base64,' . $row['ProductImage'] . '" alt="">
                                     </div>
 
                                     <div class="product-preview">
-                                        <img src="product_images/' . $row['product_image'] . 'g" alt="">
+                                        <img src="data:image/jpeg;base64,' . $row['ProductImage'] . 'g" alt="">
                                     </div>
 
                                     <div class="product-preview">
-                                        <img src="product_images/' . $row['product_image'] . '" alt="">
+                                        <img src="data:image/jpeg;base64,' . $row['ProductImage'] . '" alt="">
                                     </div>
                                 </div>
                             </div>
@@ -124,20 +124,20 @@ include "header.php";
                                    
                     <div class="col-md-5">
 						<div class="product-details">
-							<h2 class="product-name">' . $row['product_title'] . '</h2>
+							<h2 class="product-name">' . $row['ProductName'] . '</h2>
 							
 							<div>
-								<h3 class="product-price">$' . $row['product_price'] . '</h3>
+								<h3 class="product-price">$' . $row['ProductPrice'] . '</h3>
 								<span class="product-available">In Stock</span>
 							</div>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<p>'.$row['ProductDescription'].'</p>
 
 							
 
 							<div class="add-to-cart">
 								
 								<div class="btn-group" style="margin-left: 25px; margin-top: 15px">
-								<button class="add-to-cart-btn" pid="' . $row['product_id'] . '"  id="product" ><i class="fa fa-shopping-cart"></i> add to cart</button>
+								<button class="add-to-cart-btn" pid="' . $row['ProductID'] . '"  id="product" ><i class="fa fa-shopping-cart"></i> add to cart</button>
                                 </div>
 								
 								
