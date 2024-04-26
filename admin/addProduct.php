@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $base64Picture = base64_encode($pictureData);
 
         // SQL query to insert product data into the database
-        $insertSql = "INSERT INTO Product (ProductName, PoductPrice, CatID, ProductDescription, ProductImage) VALUES ('$productName', $price, '$categoryId', '$description', '$base64Picture')";
+        $insertSql = "INSERT INTO Product (ProductName, ProductPrice, CatID, ProductDescription, ProductImage) VALUES ('$productName', $price, '$categoryId', '$description', '$base64Picture')";
 
         if ($con->query($insertSql)) {
             echo "Product added successfully!";

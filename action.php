@@ -108,7 +108,6 @@
 		if(mysqli_num_rows($run_query) > 0){
 			while($row = mysqli_fetch_array($run_query)){
 				$pro_id    = $row['ProductID'];
-				$pro_brand = $row['product_brand'];
 				$pro_title = $row['ProductName'];
 				$pro_price = $row['ProductPrice'];
 				$pro_image = $row['ProductImage'];
@@ -120,7 +119,7 @@
 							<div class='col-md-4 col-xs-6' >
 									<a href='product.php?p=$pro_id'><div class='product'>
 										<div class='product-img'>
-											<img src='product_images/$pro_image' style='max-height: 170px;' alt=''>
+										<img src='data:image/jpeg;base64," . $pro_image . "' style='max-height: 170px;' alt=''>
 											
 										</div></a>
 										<div class='product-body'>
