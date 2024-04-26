@@ -83,7 +83,7 @@
 		}
 	}
 	if(isset($_POST["page"])){
-		$sql = "SELECT * FROM products";
+		$sql = "SELECT * FROM Product";
 		$run_query = mysqli_query($con,$sql);
 		$count = mysqli_num_rows($run_query);
 		$pageno = ceil($count/9);
@@ -103,18 +103,17 @@
 		}else{
 			$start = 0;
 		}
-		$product_query = "SELECT * FROM products,categories WHERE product_cat=cat_id LIMIT $start,$limit";
+		$product_query = "SELECT * FROM Product,Category WHERE Product.CatID=Category.CatID LIMIT $start,$limit";
 		$run_query = mysqli_query($con,$product_query);
 		if(mysqli_num_rows($run_query) > 0){
 			while($row = mysqli_fetch_array($run_query)){
-				$pro_id    = $row['product_id'];
-				$pro_cat   = $row['product_cat'];
+				$pro_id    = $row['ProductID'];
 				$pro_brand = $row['product_brand'];
-				$pro_title = $row['product_title'];
-				$pro_price = $row['product_price'];
-				$pro_image = $row['product_image'];
-				$stockQty = $row['quantity'];
-				$cat_name = $row["cat_title"];
+				$pro_title = $row['ProductName'];
+				$pro_price = $row['ProductPrice'];
+				$pro_image = $row['ProductImage'];
+				$stockQty = $row['ProductQTY'];
+				$cat_name = $row["CategoryName"];
 				echo "
 					
 							

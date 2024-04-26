@@ -4,7 +4,7 @@ $ip_add = getenv("REMOTE_ADDR");
 include "db.php";
 
 if(isset($_POST["categoryhome"])){
-	$category_query = "SELECT * FROM categories WHERE cat_id!=1";
+	$category_query = "SELECT * FROM Category WHERE CatID!=1";
     
 	$run_query = mysqli_query($con,$category_query) or die(mysqli_error($con));
 	echo "
@@ -17,10 +17,10 @@ if(isset($_POST["categoryhome"])){
 	";
 	if(mysqli_num_rows($run_query) > 0){
 		while($row = mysqli_fetch_array($run_query)){
-			$cid = $row["cat_id"];
-			$cat_name = $row["cat_title"];
+			$cid = $row["CatID"];
+			$cat_name = $row["CategoryName"];
             
-            $sql = "SELECT COUNT(*) AS count_items FROM products,categories WHERE product_cat=cat_id";
+            $sql = "SELECT COUNT(*) AS count_items FROM Product,Category WHERE Product.CatID=Category.CatID";
             $query = mysqli_query($con,$sql);
             $row = mysqli_fetch_array($query);
             $count=$row["count_items"];
