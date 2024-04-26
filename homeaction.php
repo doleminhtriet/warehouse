@@ -4,7 +4,7 @@ $ip_add = getenv("REMOTE_ADDR");
 include "db.php";
 
 if(isset($_POST["categoryhome"])){
-	$category_query = "SELECT * FROM Category WHERE CatID!=1";
+	$category_query = "SELECT * FROM Category ";
     
 	$run_query = mysqli_query($con,$category_query) or die(mysqli_error($con));
 	echo "
@@ -13,7 +13,6 @@ if(isset($_POST["categoryhome"])){
 					<!-- NAV -->
 					<ul class='main-nav nav navbar-nav'>
                     <li class='active'><a href='index.php'>Home</a></li>
-                    <li><a href='index.php'>Electronics</a></li>
 	";
 	if(mysqli_num_rows($run_query) > 0){
 		while($row = mysqli_fetch_array($run_query)){
@@ -46,7 +45,7 @@ if(isset($_POST["categoryhome"])){
 
 
 if(isset($_POST["page"])){
-	$sql = "SELECT * FROM products";
+	$sql = "SELECT * FROM Product";
 	$run_query = mysqli_query($con,$sql);
 	$count = mysqli_num_rows($run_query);
 	$pageno = ceil($count/2);
@@ -66,16 +65,15 @@ if(isset($_POST["getProducthome"])){
 	}else{
 		$start = 0;
 	}
-	$product_query = "SELECT * FROM products,categories WHERE product_cat=cat_id LIMIT $start,$limit";
+	$product_query = "SELECT * FROM Product,Category WHERE Product.CatID=Category.CatID LIMIT $start,$limit";
 	$run_query = mysqli_query($con,$product_query);
 	if(mysqli_num_rows($run_query) > 0){
 		while($row = mysqli_fetch_array($run_query)){
-			$pro_id    = $row['product_id'];
-			$pro_cat   = $row['product_cat'];
-			$pro_brand = $row['product_brand'];
-			$pro_title = $row['product_title'];
-			$pro_price = $row['product_price'];
-			$pro_image = $row['product_image'];
+			$pro_id    = $row['ProductID'];
+			$pro_cat   = $row['CatID'];
+			$pro_title = $row['ProductName'];
+			$pro_price = $row['ProductPrice'];
+			$pro_image = $row['ProductImage'];
             
             $cat_name = $row["cat_title"];
 			echo "
@@ -154,21 +152,20 @@ if(isset($_POST["gethomeProduct"])){
 if(isset($_POST["get_seleted_Category"]) ||  isset($_POST["search"])){
 	if(isset($_POST["get_seleted_Category"])){
 		$id = $_POST["cat_id"];
-		$sql = "SELECT * FROM products,categories WHERE product_cat = '$id' AND product_cat=cat_id";
+		$sql = "SELECT * FROM Product, Category WHERE Product.CatID = '$id' AND Product.CatID=Category.CatID";
 	}else {
 		$keyword = $_POST["keyword"];
-		$sql = "SELECT * FROM products,categories WHERE product_cat=cat_id AND product_keywords LIKE '%$keyword%'";
+		$sql = "SELECT * FROM Product, Category WHERE Product.CatID=Category.CatID AND ProductName LIKE '%$keyword%'";
 	}
 	
 	$run_query = mysqli_query($con,$sql);
 	while($row=mysqli_fetch_array($run_query)){
-			$pro_id    = $row['product_id'];
-			$pro_cat   = $row['product_cat'];
-			$pro_brand = $row['product_brand'];
-			$pro_title = $row['product_title'];
-			$pro_price = $row['product_price'];
-			$pro_image = $row['product_image'];
-            $cat_name = $row["cat_title"];
+			$pro_id    = $row['ProductID'];
+			$pro_cat   = $row['CatID'];
+			$pro_title = $row['ProductName'];
+			$pro_price = $row['ProductPrice'];
+			$pro_image = $row['ProductImage'];
+            $cat_name = $row["CategoryName"];
 			echo "
 					
                         

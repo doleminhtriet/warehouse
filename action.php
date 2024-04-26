@@ -5,7 +5,7 @@
 
 
 	if(isset($_POST["category"])){
-		$category_query = "SELECT * FROM categories";
+		$category_query = "SELECT * FROM Category";
 		
 		$run_query = mysqli_query($con,$category_query) or die(mysqli_error($con));
 		echo "
@@ -19,9 +19,9 @@
 			$i=1;
 			while($row = mysqli_fetch_array($run_query)){
 				
-				$cid = $row["cat_id"];
-				$cat_name = $row["cat_title"];
-				$sql = "SELECT COUNT(*) AS count_items FROM products WHERE product_cat=$i";
+				$cid = $row["CatID"];
+				$cat_name = $row["CategoryName"];
+				$sql = "SELECT COUNT(*) AS count_items FROM Product WHERE CatID=$i";
 				$query = mysqli_query($con,$sql);
 				$row = mysqli_fetch_array($query);
 				$count=$row["count_items"];
