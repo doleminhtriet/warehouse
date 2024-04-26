@@ -279,10 +279,10 @@
 
 		if (isset($_SESSION["uid"])) {
 			//When user is logged in this query will execute
-			$sql = "SELECT a.product_id,a.product_title,a.product_price,a.product_image,b.id,b.qty,a.Quantity FROM products a,cart b WHERE a.product_id=b.p_id AND b.user_id='$_SESSION[uid]'";
+			$sql = "SELECT a.ProductID,a.ProductName,a.ProductPrice,a.ProductImage,b.CartID, b.CartQTY, a.ProductQTY FROM Product a, Cart b WHERE a.ProductID=b.ProducID AND b.UserID='$_SESSION[uid]'";
 		}else{
 			//When user is not logged in this query will execute
-			$sql = "SELECT a.product_id,a.product_title,a.product_price,a.product_image,b.id,b.qty, a.Quantity FROM products a,cart b WHERE a.product_id=b.p_id AND b.ip_add='$ip_add' AND b.user_id < 0";
+			$sql = "SELECT a.ProductID,a.ProductName,a.ProductPrice,a.ProductImage,b.CartID, b.CartQTY, a.ProductQTY FROM Product a, Cart b WHERE a.ProductID=b.ProducID AND b.IpAdd='$ip_add' AND b.UserID < 0";
 		}
 		$query = mysqli_query($con,$sql);
 		if (isset($_POST["getCartItem"])) {
@@ -293,13 +293,13 @@
 				while ($row=mysqli_fetch_array($query)) {
 					
 					$n++;
-					$product_id = $row["product_id"];
-					$product_title = $row["product_title"];
-					$product_price = $row["product_price"];
-					$product_image = $row["product_image"];
+					$product_id = $row["ProductID"];
+					$product_title = $row["ProductName"];
+					$product_price = $row["ProductPrice"];
+					$product_image = $row["ProductImage"];
 					$cart_item_id = $row["id"];
-					$qty = $row["qty"];
-					$stockQty = $row["Quantity"];
+					$qty = $row["CartQTY"];
+					$stockQty = $row["ProductQTY"];
 					$total_price=$total_price+$product_price;
 					
 					echo '
@@ -307,7 +307,7 @@
 						
 						<div class="product-widget">
 													<div class="product-img">
-														<img src="product_images/'.$product_image.'" alt="">
+													<img src="data:image/jpeg;base64,' . $product_image . '" alt="">
 													</div>
 													<div class="product-body">
 														<h3 class="product-name"><a href="#">'.$product_title.'</a></h3>

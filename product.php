@@ -182,7 +182,7 @@ include "header.php";
                     
 				
                     ';
-					$_SESSION['product_id'] = $row['product_id'];
+					$_SESSION['product_id'] = $row['ProductID'];
 				}
 			}
 			?>

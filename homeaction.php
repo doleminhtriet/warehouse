@@ -105,15 +105,14 @@ if(isset($_POST["gethomeProduct"])){
 		$start = 0;
 	}
     
-	$product_query = "SELECT * FROM products,categories WHERE product_cat=cat_id AND product_id BETWEEN 71 AND 74";
+	$product_query = "SELECT * FROM Product, Category WHERE Product.CatID = Category.CatID AND ProductID BETWEEN 71 AND 74";
 	$run_query = mysqli_query($con,$product_query);
 	if(mysqli_num_rows($run_query) > 0){
         
 		while($row = mysqli_fetch_array($run_query)){
-			$pro_id    = $row['product_id'];
+			$pro_id    = $row['ProductID'];
 			$pro_cat   = $row['product_cat'];
-			$pro_brand = $row['product_brand'];
-			$pro_title = $row['product_title'];
+			$pro_title = $row['ProductName'];
 			$pro_price = $row['product_price'];
 			$pro_image = $row['product_image'];
             
