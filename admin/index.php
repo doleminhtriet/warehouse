@@ -82,7 +82,7 @@
 
                 cell1.innerHTML = product.ProductID;
                 cell2.innerHTML = product.ProductName;
-                cell3.innerHTML = '$'+product.PoductPrice;
+                cell3.innerHTML = '$'+product.ProductPrice;
                 cell4.innerHTML = product.ProductDescription;
                 cell5.innerHTML = '<img src="data:image/jpeg;base64,' + product.ProductImage + '" alt="Product Image" style="max-width:100px; max-height:100px;">';
 

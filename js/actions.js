@@ -97,9 +97,11 @@ $(document).ready(function(){
 	
 	})
     $("body").delegate(".categoryhome","click",function(event){
+		onsole.log("Clicked on .categoryhome");
 		$("#get_product").html("<h3>Loading...</h3>");
 		event.preventDefault();
 		var cid = $(this).attr('cid');
+		alert("Selected cat_id: " + cid);
 		
 			$.ajax({
 			url		:	"homeaction.php",
@@ -110,6 +112,7 @@ $(document).ready(function(){
 				if($("body").width() < 480){
 					$("body").scrollTop(683);
 				}
+				
 			}
 		})
 	
@@ -231,7 +234,7 @@ $(document).ready(function(){
 	//Add Product into Cart
 	$("body").delegate("#product","click",function(event){
 		var pid = $(this).attr("pid");
-		
+		console.log("Product clicked", event);
 		event.preventDefault();
 		$(".overlay").show();
 		$.ajax({
@@ -243,6 +246,7 @@ $(document).ready(function(){
 				getCartItem();
 				$('#product_msg').html(data);
 				$('.overlay').hide();
+				
 			}
 		})
 	})

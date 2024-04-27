@@ -10,7 +10,6 @@ if (isset($_SESSION["uid"])) {
 	$f_name = $_POST["firstname"];
 	$email = $_POST['email'];
 	$address = $_POST['address'];
-    $city = $_POST['city'];
     $state = $_POST['state'];
     $zip= $_POST['zip'];
     $cardname= $_POST['cardname'];
@@ -23,13 +22,13 @@ if (isset($_SESSION["uid"])) {
     $prod_total = $_POST['total_price'];
     
     
-    $sql0="SELECT order_id from `orders_info`";
+    $sql0="SELECT OrderId from `OrderInfo`";
     $runquery=mysqli_query($con,$sql0);
     if (mysqli_num_rows($runquery) == 0) {
         echo( mysqli_error($con));
         $order_id=1;
     }else if (mysqli_num_rows($runquery) > 0) {
-        $sql2="SELECT MAX(order_id) AS max_val from `orders_info`";
+        $sql2="SELECT MAX(OrderId) AS max_val from `OrderInfo`";
         $runquery1=mysqli_query($con,$sql2);
         $row = mysqli_fetch_array($runquery1);
         $order_id= $row["max_val"];
@@ -37,9 +36,9 @@ if (isset($_SESSION["uid"])) {
         echo( mysqli_error($con));
     }
 
-	$sql = "INSERT INTO `orders_info` 
-	(`order_id`,`user_id`,`f_name`, `email`,`address`, 
-	`city`, `state`, `zip`, `cardname`,`cardnumber`,`expdate`,`prod_count`,`total_amt`,`cvv`) 
+	$sql = "INSERT INTO `OrderInfo` 
+	(`OrderId`,`UserId`,`Address`, `City`, `State`, `Zip`, `Cardname`,`Cardnumber`,
+    `Expdate`,`ProdCount`,`TotalAmt`,`Cvv`) 
 	VALUES ($order_id, '$user_id','$f_name','$email', 
     '$address', '$city', '$state', '$zip','$cardname','$cardnumberstr','$expdate','$total_count','$prod_total','$cvv')";
 
