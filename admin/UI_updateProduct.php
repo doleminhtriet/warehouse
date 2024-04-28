@@ -21,7 +21,7 @@
         $productId = $_GET['id'];
 
         // Fetch product data based on the product ID
-        $sql = "SELECT ProductName, ProductPrice, ProductDescription, ProductImage FROM Product WHERE ProductID = $productId";
+        $sql = "SELECT ProductName, ProductPrice, ProductQTY, ProductDescription, ProductImage FROM Product WHERE ProductID = $productId";
         $result = $con->query($sql);
 
         if ($result->num_rows > 0) {
@@ -29,6 +29,7 @@
             $row = $result->fetch_assoc();
             $productName = $row['ProductName'];
             $price = $row['ProductPrice'];
+            $qty = $row['ProductQTY'];
             $description = $row['ProductDescription'];
             $img= $row['ProductImage'];
             //echo $row['product_name'];
@@ -53,10 +54,13 @@
             <input type="hidden" id="product_id" name="product_id" value=<?php echo $productId; ?> >
             
             <label for="product_name">Product Name:</label>
-            <input type="text" name="product_name" required value='<?php echo $row['product_name']; ?>'>
+            <input type="text" name="product_name" required value='<?php echo $row['ProductName']; ?>'>
 
             <label for="price">Price:</label>
             <input type="number" name="price" required value=<?php echo $price; ?> > 
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" name="quantity" required value=<?php echo $qty; ?> > 
 
             <label for="description">Description:</label>
             <textarea name="description" required><?php echo $description; ?></textarea>

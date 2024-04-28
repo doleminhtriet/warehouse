@@ -8,7 +8,6 @@ include "./ultilities/function.php";
 if (isset($_SESSION["uid"])) {
 
 	$f_name = $_POST["firstname"];
-	$email = $_POST['email'];
 	$address = $_POST['address'];
     $state = $_POST['state'];
     $zip= $_POST['zip'];
@@ -39,8 +38,8 @@ if (isset($_SESSION["uid"])) {
 	$sql = "INSERT INTO `OrderInfo` 
 	(`OrderId`,`UserId`,`Address`, `City`, `State`, `Zip`, `Cardname`,`Cardnumber`,
     `Expdate`,`ProdCount`,`TotalAmt`,`Cvv`) 
-	VALUES ($order_id, '$user_id','$f_name','$email', 
-    '$address', '$city', '$state', '$zip','$cardname','$cardnumberstr','$expdate','$total_count','$prod_total','$cvv')";
+	VALUES ($order_id, '$user_id',    '$address', '$city', '$state', '$zip','$cardname',
+    '$cardnumberstr','$expdate','$total_count','$prod_total','$cvv')";
 
 
     if(mysqli_query($con,$sql)){
@@ -58,12 +57,12 @@ if (isset($_SESSION["uid"])) {
             $prod_qty=$prod_qty_+$str;
             $sub_total=(int)$prod_price*(int)$prod_qty;
             $stockQty = getProductByID($prod_id, $con);
-            $sql1="INSERT INTO `order_products` 
-            (`order_pro_id`,`order_id`,`product_id`,`qty`,`amt`) 
+            $sql1="INSERT INTO `OrderDetail` 
+            (`OrderDetailID`,`OrderId`,`ProductID`,`OrderQTY`,`Amt`) 
             VALUES (NULL, '$order_id','$prod_id','$prod_qty','$sub_total')";
             if(mysqli_query($con,$sql1)){
-                $del_sql="DELETE from cart where user_id=$user_id";
-                $update_sql="UPDATE products SET quantity=$stockQty-$prod_qty WHERE product_id=$prod_id";
+                $del_sql="DELETE from Cart where UserID=$user_id";
+                $update_sql="UPDATE Product SET ProductQTY=$stockQty-$prod_qty WHERE ProductID=$prod_id";
                 if(mysqli_query($con,$del_sql) && mysqli_query($con,$update_sql)){
                     echo"<script>window.location.href='index.php'</script>";
                 }else{

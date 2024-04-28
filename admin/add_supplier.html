@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="../css/adminStyle.css">
+
+   
+</head>
+<body>
+
+
+
+<header>
+    <h1>Add Supplier</h1>
+</header>
+
+<nav>
+    <a href="index.php" class="products">Products</a>
+    <a href="Category.php" class="category">Category</a>
+    <a href="Supplier.php" class="supplier">Category</a>
+</nav>
+
+<div class="container">
+    <form action="admFunctions.php" method="post" enctype="multipart/form-data">
+
+
+        <input type="hidden" name="action" value="addSupplier">
+
+
+        <label for="category_name">Supplier Name:</label>
+        <input type="text" name="supplier_name" required>
+
+        <label for="contact_name">Contact name:</label>
+        <input  type="text" name="contact" required>
+
+        <label for="address">Address:</label>
+        <input  type="text" name="address" required>
+
+        <label for="phone">Phone:</label>
+        <input  type="text" name="phone" required>
+
+        <input type="submit" value="Add Supplier">
+    </form>
+</div>
+
+</body>
+</html>

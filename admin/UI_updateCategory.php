@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Product</title>
-    <link rel="stylesheet" href="css/adminStyle.css">
+    <link rel="stylesheet" href="../css/adminStyle.css">
 
    
 </head>
@@ -14,22 +14,22 @@
 
 <?php
     // Include your database connection file
-    include '../conn.php';
+    include '../db.php';
 
     // Check if the category ID is provided in the URL
     if (isset($_GET['id'])) {
         $categoryId = $_GET['id'];
 
         // Fetch category data based on the category ID
-        $sql = "SELECT category_name, description, category_image FROM category WHERE category_id = $categoryId";
-        $result = $conn->query($sql);
+        $sql = "SELECT CategoryName, CategoryDescription, CategoryImage FROM Category WHERE CatID = $categoryId";
+        $result = $con->query($sql);
 
         if ($result->num_rows > 0) {
             // Adjust this based on your actual data structure
             $row = $result->fetch_assoc();
-            $categoryName = $row['category_name'];
-            $description = $row['description'];
-            $img= $row['category_image'];
+            $categoryName = $row['CategoryName'];
+            $description = $row['CategoryDescription'];
+            $img= $row['CategoryImage'];
 
 
         
@@ -51,7 +51,7 @@
             <input type="hidden" id="category_id" name="category_id" value=<?php echo $categoryId; ?> >
             
             <label for="category_name">Product Name:</label>
-            <input type="text" name="category_name" required value='<?php echo $row['category_name']; ?>'>
+            <input type="text" name="category_name" required value='<?php echo $row['CategoryName']; ?>'>
 
             <label for="description">Description:</label>
             <textarea name="description" required><?php echo $description; ?></textarea>
@@ -91,7 +91,7 @@
 }
 
 // Close the database connection
-$conn->close();
+$con->close();
 ?>
 
 

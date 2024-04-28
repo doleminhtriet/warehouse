@@ -7,6 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
     $productName = $_POST['product_name'];
     $price = $_POST['price'];
+    $qty = $_POST['quantity'];
     $categoryId = $_POST['category_id'];
     $description = $_POST['description'];
 
@@ -16,7 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $base64Picture = base64_encode($pictureData);
 
         // SQL query to insert product data into the database
-        $insertSql = "INSERT INTO Product (ProductName, ProductPrice, CatID, ProductDescription, ProductImage) VALUES ('$productName', $price, '$categoryId', '$description', '$base64Picture')";
+        $insertSql = "INSERT INTO Product (ProductName, ProductPrice, CatID, ProductDescription, ProductQTY, ProductImage) 
+        VALUES ('$productName', $price, '$categoryId', '$description',$qty, '$base64Picture')";
+        //echo $insertSql; 
 
         if ($con->query($insertSql)) {
             echo "Product added successfully!";

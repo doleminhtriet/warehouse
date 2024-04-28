@@ -5,7 +5,7 @@ include "db.php";
 // Function to get product quantity by ID
 function getProductByID($productId, $con) {
     echo "Product ID: " . $productId;
-    $query = "SELECT * FROM products WHERE product_id = '$productId'";
+    $query = "SELECT * FROM Product WHERE ProductID = '$productId'";
     echo "SQL Query: " . $query;
     $result = mysqli_query($con, $query);
     if ($result) {

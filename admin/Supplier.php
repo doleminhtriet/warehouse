@@ -15,7 +15,7 @@
             <nav>
                 <a href="index.php" class="products">Products</a>
                 <a href="Category.php" class="category">Category</a>
-                <a href="Supplier.php" class="supplier">Supply</a>
+                <a href="Supplier.php" class="supplier">Supplier</a>
             </nav>
 
 <div class="container">
@@ -23,14 +23,15 @@
         <h2>Welcome to the Admin Dashboard</h2>
 
         <!-- Display list of products -->
-        <h3>Category List</h3><a href="add_category.html" class="category">Add new</a>
+        <h3>Category List</h3><a href="add_supplier.html" class="supplier">Add new</a>
         <table id="productTable">
             <thead>
                 <tr>
                     <th width= "5%">ID</th>
-                    <th width= "10%">Name</th>
-                    <th width="30%">Description</th>
-                    <th>Img</th>
+                    <th width= "15%">Supplier Name</th>
+                    <th width="15%">Contact Name</th>
+                    <th>Address</th>
+                    <th>Phone</th>
                     <th width= "5%"></th>
                     <th width= "5%"></th>
                 </tr>
@@ -46,7 +47,7 @@
     };
 
     function fetchProducts() {
-    fetch('get_Category.php')
+    fetch('get_supplier.php')
         .then(response => {
             // Log the raw response for debugging
             console.log('Raw response:', response);
@@ -56,7 +57,7 @@
             updateTable(data);
         })
         .catch(error => {
-            console.error('Error fetching category:', error);
+            console.error('Error fetching supplier:', error);
         });
     }
 
@@ -67,7 +68,7 @@
         tableBody.innerHTML = '';
 
         // Add new rows with product data
-        products.forEach(function(category) {
+        products.forEach(function(supplier) {
             var row = tableBody.insertRow();
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
@@ -75,53 +76,57 @@
             var cell4 = row.insertCell(3);
             var cell5 = row.insertCell(4);
             var cell6 = row.insertCell(5);
+            var cell7 = row.insertCell(6);
         
 
-            cell1.innerHTML = category.CatID;
-            cell2.innerHTML = category.CategoryName;
-            cell3.innerHTML = category.CategoryDescription;
-            cell4.innerHTML = '<img src="data:image/jpeg;base64,' + category.CategoryImage + '" alt="Product Image" style="max-width:100px; max-height:100px;">';
+            cell1.innerHTML = supplier.SupplierID;
+            cell2.innerHTML = supplier.SupplierName;
+            cell3.innerHTML = supplier.ContactName;
+            cell4.innerHTML = supplier.Address;
+            cell5.innerHTML = supplier.Phone;
 
              // Add update link
              var updateLink = document.createElement('a');
-            updateLink.href = 'UI_updateCategory.php?id=' + category.CatID; // Update this line
+            updateLink.href = 'UI_updateSupplier.php?id=' + supplier.SupplierID; // Update this line
             updateLink.textContent = 'Update';
 
 
             // Add delete link
             var deleteLink = document.createElement('a');
-            deleteLink.href = 'delete_Category.php?id=' + category.CatID; // Replace with your delete script
+            deleteLink.href = '#'; // Replace with your delete script
             deleteLink.textContent = 'Delete';
             deleteLink.onclick = function() {
                 // You can add a confirmation dialog or directly call a delete function here
                 // For simplicity, this example uses a confirmation dialog
-                var confirmDelete = confirm('Are you sure you want to delete this Category?');
+                var confirmDelete = confirm('Are you sure you want to delete this Supplier?');
                 if (confirmDelete) {
-                    deleteCategory(category.CatID);
+                    
+                    deleteCategory(supplier.SupplierID);
                 }
                 return false; // Prevent the default link behavior
             };
 
-            cell5.appendChild(updateLink);
-            cell6.appendChild(deleteLink);
+            cell6.appendChild(updateLink);
+            cell7.appendChild(deleteLink);
         });
     }
 
-    function deleteCategory(categoryId) {
-    // Perform the delete operation using AJAX
-    fetch('delete_Category.php?id=' + categoryId)
+    function deleteCategory(SupplierID) {
+     // Perform the delete operation using AJAX
+     fetch('admFunctions.php?action=deleteSupplier&id=' + SupplierID)
         .then(response => response.json())
         .then(data => {
+            
             // Check if the deletion was successful
             if (data.success) {
                 // Reload the table after a successful delete
                 fetchProducts();
             } else {
-                console.error('Error deleting product:', data.error);
+                console.error('Error deleting Supplier:', data.error);
             }
         })
         .catch(error => {
-            console.error('Error deleting product:', error);
+            console.error('Error deleting Supplier:', error);
         });
 }
 

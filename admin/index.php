@@ -15,6 +15,8 @@
             <nav>
                 <a href="#" class="products">Products</a>
                 <a href="Category.php" class="category">Category</a>
+                <a href="Supplier.php" class="supply">Supply</a>
+                <a href="add_stockIn.php" class="stock">Supply</a>
             </nav>
 
 <div class="container">
@@ -29,6 +31,7 @@
                     <th width= "5%">ID</th>
                     <th width= "10%">Name</th>
                     <th width= "10%">Price</th>
+                    <th width= "10%">QTY</th>
                     <th width="30%">Description</th>
                     <th>Img</th>
                     <th width= "5%"></th>
@@ -83,8 +86,9 @@
                 cell1.innerHTML = product.ProductID;
                 cell2.innerHTML = product.ProductName;
                 cell3.innerHTML = '$'+product.ProductPrice;
-                cell4.innerHTML = product.ProductDescription;
-                cell5.innerHTML = '<img src="data:image/jpeg;base64,' + product.ProductImage + '" alt="Product Image" style="max-width:100px; max-height:100px;">';
+                cell4.innerHTML = product.ProductQTY;
+                cell5.innerHTML = product.ProductDescription;
+                cell6.innerHTML = '<img src="data:image/jpeg;base64,' + product.ProductImage + '" alt="Product Image" style="max-width:100px; max-height:100px;">';
 
                 // Add update link
                 var updateLink = document.createElement('a');
@@ -106,7 +110,9 @@
                     return false; // Prevent the default link behavior
                 };
 
-                cell6.appendChild(updateLink);
+                var slash = document.createTextNode(' / ');
+                cell7.appendChild(updateLink);
+                cell7.appendChild(slash);
                 cell7.appendChild(deleteLink);
             });
         }

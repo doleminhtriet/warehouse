@@ -6,10 +6,8 @@ include '../db.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
     
-    $productId = $_POST['product_id'];
-    $productName = $_POST['product_name'];
-    $price = $_POST['price'];
-    $qty = $_POST['quantity'];
+    $categoryId = $_POST['category_id'];
+    $categoryName = $_POST['category_name'];
     $description = $_POST['description'];
 
     // Check if a picture file is uploaded
@@ -17,15 +15,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pictureData = file_get_contents($_FILES['picture']['tmp_name']);
         $base64Picture = base64_encode($pictureData);
 
-        // SQL query to insert product data into the database
-        $updateSql = "UPDATE Product SET ProductName = '$productName', ProductPrice = $price, 
-        ProductQTY = $qty ,ProductDescription = '$description', ProductImage = '$base64Picture'  WHERE ProductID = $productId";
+        // SQL query to insert category data into the database
+        $updateSql = "UPDATE Category SET CategoryName = '$categoryName', CategoryDescription = '$description', 
+        CategoryImage = '$base64Picture' WHERE CatID = $categoryId";
 
         if ($con->query($updateSql)) {
-            echo "Product updated successfully!";
-            header('Refresh: 1; URL=index.php');
+            echo "Category updated successfully!";
+            header('Refresh: 1; URL=Category.php');
         } else {
-            echo "Error updating product: " . $con->error;
+            echo "Error updating category: " . $conn->error;
         }
     } else {
         echo "Error uploading picture.";

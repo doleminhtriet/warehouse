@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock-In Form</title>
+    <link rel="stylesheet" href="../css/adminStyle.css">
+    <style>
+        /* Additional CSS styles can be added here */
+        /* Style for form labels */
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Style for form inputs */
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        /* Style for file input */
+        input[type="file"] {
+            margin-top: 5px;
+        }
+
+        /* Style for submit button */
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Style for submit button on hover */
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Style for data grid view */
+        #stockInDetail {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        #stockInDetail th,
+        #stockInDetail td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        #stockInDetail th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Stock-In Form</h1>
+    </header>
+
+    <nav>
+        <a href="index.php" class="products">Products</a>
+        <a href="Category.php" class="category">Category</a>
+        <a href="Supplier.php" class="supplier">Category</a>
+
+    </nav>
+
+    <div class="container">
+        <form action="admFunctions.php" method="post">
+
+            <input type="hidden" name="action" value="addStockIn">
+
+            <label for="userID">User ID:</label>
+            <input type="text" id="userID" name="userID" required>
+
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="note">Note:</label>
+            <textarea id="note" name="note" required></textarea>
+
+            <label for="status">Status:</label>
+            <input type="text" id="status" name="status" required>
+
+            <label for="orderID">Order ID:</label>
+            <input type="text" id="orderID" name="orderID" required>
+
+            <label for="supplierID">Supplier ID:</label>
+            <input type="text" id="supplierID" name="supplierID" required>
+
+            <h3>Stock-In Detail</h3>
+            <table id="stockInDetail">
+                <thead>
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" name="productID[]" required></td>
+                        <td><input type="number" name="quantity[]" required onchange="calculateTotal(this)"></td>
+                        <td><input type="number" name="price[]" required onchange="calculateTotal(this)"></td>
+                        <td><input type="text" name="total[]" readonly></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" onclick="addRow()">Add Row</button><br><br>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <script>
+        function addRow() {
+            var table = document.getElementById("stockInDetail").getElementsByTagName('tbody')[0];
+            var newRow = table.insertRow();
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var cell4 = newRow.insertCell(3);
+            cell1.innerHTML = '<input type="text" name="productID[]" required>';
+            cell2.innerHTML = '<input type="number" name="quantity[]" required onchange="calculateTotal(this)">';
+            cell3.innerHTML = '<input type="number" name="price[]" required onchange="calculateTotal(this)">';
+            cell4.innerHTML = '<input type="text" name="total[]" readonly>';
+        }
+
+        function calculateTotal(input) {
+            var row = input.parentNode.parentNode;
+            var quantity = parseFloat(row.cells[1].getElementsByTagName('input')[0].value);
+            var price = parseFloat(row.cells[2].getElementsByTagName('input')[0].value);
+            var total = quantity * price;
+            row.cells[3].getElementsByTagName('input')[0].value = total.toFixed(2);
+        }
+    </script>
+
+</body>
+
+</html>
