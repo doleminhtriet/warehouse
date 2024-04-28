@@ -109,16 +109,32 @@ CREATE TABLE `OrderDetail` (
 
 CREATE TABLE StockIn (
     StockId INT AUTO_INCREMENT PRIMARY KEY,
-    UserID VARCHAR(50),
-    SupplierID VARCHAR(50),
+    UserID int,
+    SupplierID BIGINT,
     StockDate DATE,
     StockNote TEXT,
     StockStatus VARCHAR(50),
-	PRIMARY KEY (`StockId`),
     KEY `StockIn_UserId` (`UserID`),
     KEY `StockIn_SupplierId` (`SupplierID`),
-    CONSTRAINT `FK_StockIn_UserID` foreign key (`UserID`) references `CustomerInfo` (`UserId`),
-    CONSTRAINT `FK_StockIn_SupplierID` foreign key (`SupplierID`) references `Supplier` (`SupplierID`)
+    CONSTRAINT `FK_StockIn_UserID` FOREIGN KEY (`UserID`) REFERENCES `CustomerInfo` (`UserId`),
+    CONSTRAINT `FK_StockIn_SupplierID` FOREIGN KEY (`SupplierID`) REFERENCES `Supplier` (`SupplierID`)
 );
 
-SELECT a.ProductID,a.ProductName,a.ProductPrice,a.ProductImage, b.CartID, b.CartQTY FROM Product a,Cart b WHERE a.ProductID=b.ProductID 
+
+CREATE TABLE StockInDetail (
+    StockInDetailId BIGINT AUTO_INCREMENT PRIMARY KEY,
+    StockInId INT,
+    ProductID VARCHAR(50),
+    Quantity INT,
+    Price DECIMAL(10,2),
+    Total DECIMAL(10,2),
+    FOREIGN KEY (StockInId) REFERENCES StockIn(StockId)
+);
+
+
+SELECT a.ProductID,a.ProductName,a.ProductPrice,a.ProductImage, b.CartID, b.CartQTY 
+FROM Product a,Cart b WHERE a.ProductID=b.ProductID 
+select * from CustomerInfo
+select * from OrderInfo
+select * from Supplier
+select * from Product

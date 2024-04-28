@@ -76,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         echo "Supplier updated successfully!";
         header('Refresh: 1; URL=Supplier.php');
     } else {
-        echo "Error updating Supplier: " . $conn->error;
+        echo "Error updating Supplier: " . $con->error;
     }
 }
 
@@ -90,11 +90,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     $orderID = $_POST['orderID'];
     $supplierID = $_POST['supplierID'];
 
-    $sql = "INSERT INTO stock_in (userID, date, note, status, orderID, supplierID)
-        VALUES ('$userID', '$date', '$note', '$status', '$orderID', '$supplierID')";
+    $sql = "INSERT INTO StockIn (UserID, StockDate, StockNote, StockStatus, SupplierID)
+        VALUES ('$userID', '$date', '$note', '$status', '$supplierID')";
 
-    if (mysqli_query($conn, $sql)) {
-        $stock_in_id = mysqli_insert_id($conn);
+    if (mysqli_query($con, $sql)) {
+        $stock_in_id = mysqli_insert_id($con);
 
         // Process the child form data (stock-in detail)
         $productIDs = $_POST['productID'];
@@ -107,14 +107,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             $price = $prices[$key];
             $total = $totals[$key]; // Get total from submitted data
 
-            $sql = "INSERT INTO stock_in_detail (stock_in_id, productID, quantity, price, total)
+            $sql = "INSERT INTO StockInDetail (StockInId, ProductID, Quantity, Price, Total)
                 VALUES ($stock_in_id, '$productID', $quantity, $price, $total)";
-            mysqli_query($conn, $sql);
+            mysqli_query($con, $sql);
         }
 
         echo "Stock-in data saved successfully!";
+        header('Refresh: 1; URL=Supplier.php');
     } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        echo "Error: " . $sql . "<br>" . mysqli_error($con);
     }
 }
 
