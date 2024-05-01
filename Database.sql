@@ -128,19 +128,22 @@ CREATE TABLE StockInDetail (
     Quantity INT,
     Price DECIMAL(10,2),
     Total DECIMAL(10,2),
-    FOREIGN KEY (StockInId) REFERENCES StockIn(StockId)
+    FOREIGN KEY (StockInId) add_stockInREFERENCES StockIn(StockId)
 );
 
-CREATE VIEW StockInAll AS
-Select StockId, FullName, StockDate, StockStatus, SupplierName
+CREATE VIEW V_StockInAll AS
+Select StockId, FullName, StockDate, StockStatus, SupplierName, sum(Quantity*Quantity) as TotalAmt
 From StockIn inner join CustomerInfo on StockIn.UserID = CustomerInfo.UserId
 			 inner join Supplier on Supplier.SupplierID = StockIn.SupplierID
+             inner join StockInDetail on StockInDetail.StockInId = StockIn.StockId
+group by StockId, FullName, StockDate, StockStatus, SupplierName
 
 
 SELECT a.ProductID,a.ProductName,a.ProductPrice,a.ProductImage, b.CartID, b.CartQTY 
 FROM Product a,Cart b WHERE a.ProductID=b.ProductID 
 select * from CustomerInfo
 select * from OrderInfo
+select * from StockInDetail
 select * from Supplier
 select * from Product
 select * from StockInDetail

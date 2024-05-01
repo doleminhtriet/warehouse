@@ -106,7 +106,7 @@
 	}
 
 
-	if (isset($_POST["get_seleted_Category"])  || isset($_POST["search"])) {
+	if (isset($_POST["get_seleted_Category"])  ) {
 		if (isset($_POST["get_seleted_Category"])) {
 			$id = $_POST["cat_id"];
 			$sql = "SELECT * FROM Product, Category WHERE Product.CatID = '$id' AND Product.CatID=Category.CatID";
@@ -322,7 +322,7 @@
 							<tr>
 								<td data-th="Product" rowspan ="2">
 									<div class="row">
-									
+									C
 										<div class="col-sm-4 "><img src="data:image/jpeg;base64,' . $product_image . '" style="height: 70px;width:75px;"/>
 										<h4 class="nomargin product-name header-cart-item-name"><a href="product.php?p=' . $product_id . '">' . $product_title . '</a></h4>
 										</div>

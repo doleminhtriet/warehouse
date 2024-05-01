@@ -4,7 +4,7 @@ $ip_add = getenv("REMOTE_ADDR");
 include "db.php";
 
 if (isset($_POST["categoryhome"])) {
-	$category_query = "SELECT * FROM Category WHERE CatID!=1";
+	$category_query = "SELECT * FROM Category";
 
 	$run_query = mysqli_query($con, $category_query) or die(mysqli_error($con));
 	echo "
@@ -27,8 +27,6 @@ if (isset($_POST["categoryhome"])) {
 			$query = mysqli_query($con, $sql);
 			$row = mysqli_fetch_array($query);
 			$count = $row["count_items"];
-
-
 
 			echo "
 					
@@ -114,7 +112,7 @@ if (isset($_POST["gethomeProduct"])) {
                                 <div class='col-md-3 col-xs-6'>
 								<a href='product.php?p=$pro_id'><div class='product'>
 									<div class='product-img'>
-										<img src='product_images/$pro_image' style='max-height: 170px;' alt=''>
+										<img src='data:image/jpeg;base64,$pro_image' style='max-height: 170px;' alt=''>
 										
 									</div></a>
 									<div class='product-body'>
@@ -151,8 +149,9 @@ if (isset($_POST["get_seleted_Category"]) ) {
 		$id = $_POST["cat_id"];
 		$sql = "SELECT * FROM Product, Category WHERE Product.CatID = '$id' AND Product.CatID=Category.CatID";
 	} else {
+		$id = $_POST["cat_id"];
 		$keyword = $_POST["keyword"];
-		$sql = "SELECT * FROM Product , Category WHERE Product.CatID=Category.CatID AND ProductName LIKE '%$keyword%'";
+		$sql = "SELECT * FROM Product, Category WHERE Product.CatID = '$id' AND Product.CatID=Category.CatID";
 	}
 
 	$run_query = mysqli_query($con, $sql);

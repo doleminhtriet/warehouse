@@ -52,7 +52,7 @@ include 'header.php';
 					<!-- aside Widget -->
 					<div class="aside">
 						<h3 class="aside-title"></h3>
-						
+
 					</div>
 					<!-- /aside Widget -->
 
@@ -77,7 +77,7 @@ include 'header.php';
 				<!-- STORE -->
 				<div id="store" class="col-md-9" display="none">
 					<!-- store top filter -->
-					
+
 					<!-- /store top filter -->
 
 					<!-- store products -->

@@ -12,7 +12,7 @@ $(document).ready(function(){
 		$.ajax({
 			url	:	"action.php",
 			method:	"POST",
-			data	:	{category:1},
+			data	:	{C:1},
 			success	:	function(data){
 				$("#get_category").html(data);
 				
@@ -86,7 +86,7 @@ $(document).ready(function(){
 			$.ajax({
 			url		:	"action.php",
 			method	:	"POST",
-			data	:	{get_seleted_Category:1,cat_id:cid},
+			data	:	{C:1,CC:cid},
 			success	:	function(data){
 				$("#get_product").html(data);
 				if($("body").width() < 480){
@@ -97,7 +97,6 @@ $(document).ready(function(){
 	
 	})
     $("body").delegate(".categoryhome","click",function(event){
-		onsole.log("Clicked on .categoryhome");
 		$("#get_product").html("<h3>Loading...</h3>");
 		event.preventDefault();
 		var cid = $(this).attr('cid');
