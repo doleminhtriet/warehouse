@@ -15,7 +15,8 @@
             <nav>
                 <a href="index.php" class="products">Products</a>
                 <a href="Category.php" class="category">Category</a>
-                <a href="Supplier.php" class="supplier">Supply</a>
+                <a href="Supplier.php" class="supply">Supply</a>
+                <a href="add_stockIn.php" class="stock">Stock In</a>
             </nav>
 
 <div class="container">
@@ -46,7 +47,7 @@
     };
 
     function fetchProducts() {
-    fetch('get_Category.php')
+    fetch('admFunctions.php?action=getAllCategory')
         .then(response => {
             // Log the raw response for debugging
             console.log('Raw response:', response);

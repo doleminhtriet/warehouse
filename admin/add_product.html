@@ -1,71 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product</title>
     <link rel="stylesheet" href="../css/adminStyle.css">
 
-   
+
 </head>
+
 <body>
 
 
 
-<header>
-    <h1>Add Product</h1>
-</header>
+    <header>
+        <h1>Add Product</h1>
+    </header>
 
-<nav>
-    <a href="index.php" class="products">Products</a>
-    <a href="Category.php" class="category">Category</a>
-</nav>
+    <nav>
+        <a href="index.php" class="products">Products</a>
+        <a href="Category.php" class="category">Category</a>
+        <a href="Supplier.php" class="supply">Supply</a>
+        <a href="add_stockIn.php" class="stock">Stock In</a>
+    </nav>
 
-<div class="container">
-    <form action="addProduct.php" method="post" enctype="multipart/form-data">
-        <label for="product_name">Product Name:</label>
-        <input type="text" name="product_name" required>
+    <div class="container">
+        <form action="addProduct.php" method="post" enctype="multipart/form-data">
+            <label for="product_name">Product Name:</label>
+            <input type="text" name="product_name" required>
 
-        <label for="categorySelect">Select Category:</label>
-        <select id="categorySelect" name="category_id"></select>
+            <label for="categorySelect">Select Category:</label>
+            <select id="categorySelect" name="category_id"></select>
+
+
+            <label for="price">Price:</label>
+            <input type="number" name="price" required>
+
+            <label for="quantity">Price:</label>
+            <input type="number" name="quantity" required>
+
+
+            <label for="description">Description:</label>
+            <textarea name="description" required></textarea>
+
+            <label for="picture">Picture:</label>
+            <input type="file" name="picture" accept="image/*" required>
+
+            <input type="submit" value="Add Product">
+        </form>
+    </div>
+
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch data from the server
+            fetch('admFunctions.php?action=getAllCategory')
+                .then(response => response.json())
+                .then(categories => {
+                    // Populate the combobox with fetched data
+                    const categorySelect = document.getElementById('categorySelect');
+        
+                    categories.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.CatID;
+                        option.textContent = category.CategoryName;
+                        categorySelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching categories:', error));
+        });
+    
         
 
-        <label for="price">Price:</label>
-        <input type="number" name="price" required>
-
-        <label for="quantity">Price:</label>
-        <input type="number" name="quantity" required>
-
-
-        <label for="description">Description:</label>
-        <textarea name="description" required></textarea>
-
-        <label for="picture">Picture:</label>
-        <input type="file" name="picture" accept="image/*" required>
-
-        <input type="submit" value="Add Product">
-    </form>
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Fetch data from the server
-        fetch('get_Category.php')
-            .then(response => response.json())
-            .then(categories => {
-                // Populate the combobox with fetched data
-                const categorySelect = document.getElementById('categorySelect');
-    
-                categories.forEach(category => {
-                    const option = document.createElement('option');
-                    option.value = category.CatID;
-                    option.textContent = category.CategoryName;
-                    categorySelect.appendChild(option);
-                });
+        /*document.addEventListener('DOMContentLoaded', function () {
+            fetch('admFunctions.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ action: 'getAllCategory' })
             })
-            .catch(error => console.error('Error fetching categories:', error));
-    });
+                .then(response => response.json())
+                .then(categories => {
+                    const categorySelect = document.getElementById('categorySelect');
+
+                    categories.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.CatID;
+                        option.textContent = category.CategoryName;
+                        categorySelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching categories:', error));
+        });*/
+
+
     </script>
 
 </body>
+
 </html>

@@ -2,23 +2,88 @@
 
 include "../db.php"; // Include the database connection script
 
-// Function to get product quantity by ID
-function getProductByID($productId, $con)
-{
-    echo "Product ID: " . $productId;
-    $query = "SELECT * FROM Product WHERE product_id = '$productId'";
-    echo "SQL Query: " . $query;
+
+
+// Check if the request is an AJAX request and if it contains the specified action
+if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['action']) && $_GET['action'] === 'getAllSupplier') {
+
+    header('Content-Type: application/json');
+
+    // Fetch data from the database
+    $query = "SELECT * FROM Supplier";
     $result = mysqli_query($con, $query);
+
     if ($result) {
-        $row = mysqli_fetch_assoc($result);
-        $stockQty = intval($row['quantity']);
-        return $stockQty;
+        // Fetch and encode the results as JSON
+        $suppliers = array();
+        while ($row = $result->fetch_assoc()) {
+            $suppliers[] = $row;
+        }
+        echo json_encode($suppliers);
     } else {
-        $error = "Error: " . mysqli_error($con);
-        echo $error;
-        return $error;
+        echo json_encode(array('error' => 'Error executing the query: ' . $con->error));
     }
 }
+
+
+//Get All Category
+if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['action']) && $_GET['action'] === 'getAllCategory') {
+
+    $sql = "SELECT * FROM Category";
+    $result = $con->query($sql);
+
+    // Check if there are results
+    if ($result) {
+        // Fetch and encode the results as JSON
+        $category = array();
+        while ($row = $result->fetch_assoc()) {
+            $category[] = $row;
+        }
+        echo json_encode($category);
+    } else {
+        echo json_encode(array('error' => 'Error executing the query: ' . $con->error));
+    }
+}
+
+//Get All Product
+if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['action']) && $_GET['action'] === 'getAllProduct') {
+
+    $sql = "SELECT * FROM Product";
+    $result = $con->query($sql);
+
+    // Check if there are results
+    if ($result) {
+        // Fetch and encode the results as JSON
+        $products = array();
+        while ($row = $result->fetch_assoc()) {
+            $products[] = $row;
+        }
+        echo json_encode($products);
+    } else {
+        echo json_encode(array('error' => 'Error executing the query: ' . $con->error));
+    }
+}
+
+
+//Get All StockIn   
+if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['action']) && $_GET['action'] === 'getAllStockIn') {
+
+    $sql = "SELECT * FROM V_StockInAll";
+    $result = $con->query($sql);
+
+    // Check if there are results
+    if ($result) {
+        // Fetch and encode the results as JSON
+        $stocks = array();
+        while ($row = $result->fetch_assoc()) {
+            $stocks[] = $row;
+        }
+        echo json_encode($stocks);
+    } else {
+        echo json_encode(array('error' => 'stocks Error executing the query: ' . $con->error));
+    }
+}
+
 
 
 // Handle listSupplier action
@@ -36,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         echo "Supplier added successfully!";
         header('Refresh: 1; URL=Supplier.php');
     } else {
-        echo "Error adding category: " . $con->error;
+        echo "Error adding Supplier: " . $con->error;
     }
 }
 

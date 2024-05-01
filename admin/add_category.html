@@ -1,40 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product</title>
     <link rel="stylesheet" href="../css/adminStyle.css">
 
-   
+
 </head>
+
 <body>
 
 
 
-<header>
-    <h1>Add Category</h1>
-</header>
+    <header>
+        <h1>Add Category</h1>
+    </header>
 
-<nav>
-    <a href="index.php" class="products">Products</a>
-    <a href="Category.php" class="Category">Category</a>
-</nav>
+    <nav>
+        <a href="#" class="products">Products</a>
+        <a href="Category.php" class="category">Category</a>
+        <a href="Supplier.php" class="supply">Supply</a>
+        <a href="add_stockIn.php" class="stock">Stock In</a>
+    </nav>
 
-<div class="container">
-    <form action="addCategory.php" method="post" enctype="multipart/form-data">
-        <label for="category_name">Category Name:</label>
-        <input type="text" name="category_name" required>
+    <div class="container">
+        <form action="addCategory.php" method="post" enctype="multipart/form-data">
+            <label for="category_name">Category Name:</label>
+            <input type="text" name="category_name" required>
 
-        <label for="description">Description:</label>
-        <textarea name="description" required></textarea>
+            <label for="description">Description:</label>
+            <textarea name="description" required></textarea>
 
-        <label for="picture">Picture:</label>
-        <input type="file" name="picture" accept="image/*" required>
+            <label for="picture">Picture:</label>
+            <input type="file" name="picture" accept="image/*" required>
 
-        <input type="submit" value="Add Category">
-    </form>
-</div>
+            <input type="submit" value="Add Category">
+        </form>
+    </div>
 
 </body>
+
 </html>

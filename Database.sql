@@ -131,6 +131,11 @@ CREATE TABLE StockInDetail (
     FOREIGN KEY (StockInId) REFERENCES StockIn(StockId)
 );
 
+CREATE VIEW StockInAll AS
+Select StockId, FullName, StockDate, StockStatus, SupplierName
+From StockIn inner join CustomerInfo on StockIn.UserID = CustomerInfo.UserId
+			 inner join Supplier on Supplier.SupplierID = StockIn.SupplierID
+
 
 SELECT a.ProductID,a.ProductName,a.ProductPrice,a.ProductImage, b.CartID, b.CartQTY 
 FROM Product a,Cart b WHERE a.ProductID=b.ProductID 
@@ -138,3 +143,7 @@ select * from CustomerInfo
 select * from OrderInfo
 select * from Supplier
 select * from Product
+select * from StockInDetail
+SELECT * FROM Supplier
+
+SELECT * FROM CustomerInfo WHERE Email = 'minh@yahoo.com' AND Password = '1111111111'

@@ -1,3 +1,7 @@
+<?php
+session_start();
+include "admFunctions.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock-In Form</title>
     <link rel="stylesheet" href="../css/adminStyle.css">
+
     <style>
         /* Additional CSS styles can be added here */
         /* Style for form labels */
@@ -78,32 +83,33 @@
     <nav>
         <a href="index.php" class="products">Products</a>
         <a href="Category.php" class="category">Category</a>
-        <a href="Supplier.php" class="supplier">Category</a>
+        <a href="Supplier.php" class="supply">Supply</a>
+        <a href="add_stockIn.php" class="stock">Stock In</a>
 
     </nav>
     <div id="top-header">
-      <div class="container">
+        <div class="container">
 
-        <ul class="header-links pull-right">
+            <ul class="header-links pull-right">
 
-          <li><?php
-              include "db.php";
-              if (isset($_SESSION["uid"])) {
-                $sql = "SELECT FullName FROM CustomerInfo WHERE UserId='$_SESSION[uid]'";
-                $query = mysqli_query($con, $sql);
-                $row = mysqli_fetch_array($query);
-                //echo $sql;
-                echo '
+                <li>
+                    <?php
+                    include "../db.php";
+                    if (isset($_SESSION["uid"])) {
+                        $sql = "SELECT FullName FROM CustomerInfo WHERE UserId='$_SESSION[uid]'";
+                        $query = mysqli_query($con, $sql);
+                        $row = mysqli_fetch_array($query);
+                        echo '
                                <div class="dropdownn">
-                                  <a href="#" class="dropdownn" data-toggle="modal" data-target="#myModal" ><i class="fa fa-user-o"></i> HI ' . $row["FullName"] . '</a>
+                                  <a href="#" class="dropdownn" data-toggle="modal" data-target="#myModal" ><i class="fa fa-user-o"></i> Hi ' . $row["FullName"] . '</a>
                                   <div class="dropdownn-content">
                                     <a href="" data-toggle="modal" data-target="#profile"><i class="fa fa-user-circle" aria-hidden="true" ></i>My Profile</a>
-                                    <a href="logout.php"  ><i class="fa fa-sign-in" aria-hidden="true"></i>Log out</a>
+                                    <a href="../logout.php"  ><i class="fa fa-sign-in" aria-hidden="true"></i>Log out</a>
                                     
                                   </div>
                                 </div>';
-              } else {
-                echo '
+                    } else {
+                        echo '
                                 <div class="dropdownn">
                                   <a href="#" class="dropdownn" data-toggle="modal" data-target="#myModal" ><i class="fa fa-user-o"></i> My Account</a>
                                   <div class="dropdownn-content">
@@ -112,13 +118,17 @@
                                     
                                   </div>
                                 </div>';
-              }
-              ?>
+                    }
+                    ?>
 
-          </li>
-        </ul>
+                </li>
 
-      </div>
+
+
+
+            </ul>
+
+        </div>
     </div>
     <div class="container">
         <form action="admFunctions.php" method="post">
@@ -126,10 +136,11 @@
             <input type="hidden" name="action" value="addStockIn">
 
             <label for="userID">User ID:</label>
-            <input type="text" id="userID" name="userID" required>
+            <input type="text" id="userID" name="userID" required value='<?php echo $_SESSION["uid"]; ?>' readonly>
+            <input type="text" id="UserName" name="UserName" required value='<?php echo $row["FullName"]  ?>' readonly>
 
-            <label for="supplierID">Supplier ID:</label>
-            <input type="text" id="supplierID" name="supplierID" required>
+            <label for="supplierSelect">Select Supplier:</label>
+            <select id="supplierSelect" name="supplierID"></select>
 
             <label for="date">Date:</label>
             <input type="date" id="date" name="date" required>
@@ -140,10 +151,6 @@
             <label for="status">Status:</label>
             <input type="text" id="status" name="status" required>
 
-            <label for="orderID">Order ID:</label>
-            <input type="text" id="orderID" name="orderID" required>
-
-            
 
             <h3>Stock-In Detail</h3>
             <table id="stockInDetail">
@@ -157,7 +164,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type="text" name="productID[]" required></td>
+                        <td><select name="productID[]" required></select></td>
                         <td><input type="number" name="quantity[]" required onchange="calculateTotal(this)"></td>
                         <td><input type="number" name="price[]" required onchange="calculateTotal(this)"></td>
                         <td><input type="text" name="total[]" readonly></td>
@@ -178,10 +185,14 @@
             var cell2 = newRow.insertCell(1);
             var cell3 = newRow.insertCell(2);
             var cell4 = newRow.insertCell(3);
-            cell1.innerHTML = '<input type="text" name="productID[]" required>';
+            cell1.innerHTML = '<select name="productID[]" required></select>';
             cell2.innerHTML = '<input type="number" name="quantity[]" required onchange="calculateTotal(this)">';
             cell3.innerHTML = '<input type="number" name="price[]" required onchange="calculateTotal(this)">';
             cell4.innerHTML = '<input type="text" name="total[]" readonly>';
+
+            // Populate the newly added combobox with product data
+            var productSelect = cell1.querySelector('select');
+            fetchAndPopulateProducts();
         }
 
         function calculateTotal(input) {
@@ -194,5 +205,47 @@
     </script>
 
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchAndPopulateSuppliers();
+        fetchAndPopulateProducts();
+    });
+
+
+
+    function fetchAndPopulateSuppliers() {
+        fetch('admFunctions.php?action=getAllSupplier')
+            .then(response => response.json())
+            .then(suppliers => {
+                const supplierSelect = document.getElementById('supplierSelect');
+
+                suppliers.forEach(supplier => {
+                    const option = document.createElement('option');
+                    option.value = supplier.SupplierID;
+                    option.textContent = supplier.SupplierName;
+                    supplierSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching Suppliers:', error));
+    }
+
+    function fetchAndPopulateProducts() {
+        fetch('admFunctions.php?action=getAllProduct')
+            .then(response => response.json())
+            .then(products => {
+                const productSelects = document.querySelectorAll('select[name="productID[]"]');
+
+                productSelects.forEach(select => {
+                    products.forEach(product => {
+                        const option = document.createElement('option');
+                        option.value = product.ProductID;
+                        option.textContent = product.ProductName;
+                        select.appendChild(option);
+                    });
+                });
+            })
+            .catch(error => console.error('Error fetching Products:', error));
+    }
+</script>
 
 </html>

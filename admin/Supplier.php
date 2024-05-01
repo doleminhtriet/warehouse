@@ -13,17 +13,18 @@
             </header>
     
             <nav>
-                <a href="index.php" class="products">Products</a>
+            <a href="index.php" class="products">Products</a>
                 <a href="Category.php" class="category">Category</a>
-                <a href="Supplier.php" class="supplier">Supplier</a>
+                <a href="Supplier.php" class="supply">Supply</a>
+                <a href="add_stockIn.php" class="stock">Stock In</a>
             </nav>
 
 <div class="container">
     <div class="dashboard-content">
-        <h2>Welcome to the Admin Dashboard</h2>
+        <h2>Admin Dashboard</h2>
 
         <!-- Display list of products -->
-        <h3>Category List</h3><a href="add_supplier.html" class="supplier">Add new</a>
+        <h3>Supplier List</h3><a href="add_supplier.html" class="supplier">Add new</a>
         <table id="productTable">
             <thead>
                 <tr>
@@ -47,7 +48,7 @@
     };
 
     function fetchProducts() {
-    fetch('get_supplier.php')
+    fetch('admFunctions.php?action=getAllSupplier')
         .then(response => {
             // Log the raw response for debugging
             console.log('Raw response:', response);

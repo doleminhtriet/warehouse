@@ -51,7 +51,7 @@
 
         //load product from database
         function fetchProducts() {
-        fetch('get_products.php')
+        fetch('admFunctions.php?action=getAllProduct')
             .then(response => {
                 // Log the raw response for debugging
                 console.log('Raw response:', response);
