@@ -120,7 +120,7 @@
         //delete product, call function  delete_product.php
         function deleteProduct(productId) {
         // Perform the delete operation using AJAX
-        fetch('delete_product.php?id=' + productId)
+        fetch('admFunctions.php?action=deleteProduct&id=' + productId)
             .then(response => response.json())
             .then(data => {
                 // Check if the deletion was successful

@@ -84,7 +84,7 @@ include "admFunctions.php";
         <a href="index.php" class="products">Products</a>
         <a href="Category.php" class="category">Category</a>
         <a href="Supplier.php" class="supply">Supply</a>
-        <a href="add_stockIn.php" class="stock">Stock In</a>
+        <a href="InStock.php" class="stock">Stock In</a>
 
     </nav>
     <div id="top-header">
@@ -149,8 +149,10 @@ include "admFunctions.php";
             <textarea id="note" name="note" required></textarea>
 
             <label for="status">Status:</label>
-            <input type="text" id="status" name="status" required>
-
+            <select name="status" id="status">
+                <option value="sent">Sent</option>
+                <option value="received">Received</option>
+            </select>
 
             <h3>Stock-In Detail</h3>
             <table id="stockInDetail">

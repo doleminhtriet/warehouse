@@ -24,15 +24,16 @@
         <h2>Admin Dashboard</h2>
 
         <!-- Display list of products -->
-        <h3>Supplier List</h3><a href="add_supplier.html" class="supplier">Add new</a>
+        <h3>Supplier List</h3><a href="add_stockIn.php" class="supplier">Add new</a>
         <table id="productTable">
             <thead>
                 <tr>
                     <th width= "5%">ID</th>
-                    <th width= "15%">Supplier Name</th>
-                    <th width="15%">User Name</th>
-                    <th>Address</th>
-                    <th>Phone</th>
+                    <th width= "10%">Supplier Name</th>
+                    <th width="10%">User Name</th>
+                    <th width="10%">Stock in Date</th>
+                    <th width="10%">Status  </th>
+                    <th width= "5%">Total Amount</th>
                     <th width= "5%"></th>
                     <th width= "5%"></th>
                 </tr>
@@ -44,10 +45,10 @@
 
 <script>
     window.onload = function() {
-        fetchProducts();
+        fetchStockIn();
     };
 
-    function fetchProducts() {
+    function fetchStockIn() {
     fetch('admFunctions.php?action=getAllStockIn')
         .then(response => {
             // Log the raw response for debugging
@@ -78,17 +79,19 @@
             var cell5 = row.insertCell(4);
             var cell6 = row.insertCell(5);
             var cell7 = row.insertCell(6);
+            var cell8 = row.insertCell(7);
         
 
             cell1.innerHTML = supplier.StockId;
             cell2.innerHTML = supplier.SupplierName;
             cell3.innerHTML = supplier.FullName;
-            cell4.innerHTML = supplier.Address;
-            cell5.innerHTML = supplier.Phone;
+            cell4.innerHTML = supplier.StockDate;
+            cell5.innerHTML = supplier.StockStatus;
+            cell6.innerHTML = supplier.TotalAmt;
 
              // Add update link
              var updateLink = document.createElement('a');
-            updateLink.href = 'UI_updateSupplier.php?id=' + supplier.SupplierID; // Update this line
+            updateLink.href = 'UI_updateSupplier.php?id=' + supplier.StockId; // Update this line
             updateLink.textContent = 'Update';
 
 
@@ -99,35 +102,36 @@
             deleteLink.onclick = function() {
                 // You can add a confirmation dialog or directly call a delete function here
                 // For simplicity, this example uses a confirmation dialog
-                var confirmDelete = confirm('Are you sure you want to delete this Supplier?');
+                var confirmDelete = confirm('Are you sure you want to delete this Record?');
                 if (confirmDelete) {
-                    
-                    deleteCategory(supplier.SupplierID);
+                    deleteInstock(supplier.StockId);
                 }
                 return false; // Prevent the default link behavior
             };
 
-            cell6.appendChild(updateLink);
-            cell7.appendChild(deleteLink);
+            cell7.appendChild(updateLink);
+            cell8.appendChild(deleteLink);
         });
     }
 
-    function deleteCategory(SupplierID) {
+    function deleteInstock(StockId) {
      // Perform the delete operation using AJAX
-     fetch('admFunctions.php?action=deleteSupplier&id=' + SupplierID)
+     fetch('admFunctions.php?action=deleteInStock&id=' + StockId)
         .then(response => response.json())
         .then(data => {
             
             // Check if the deletion was successful
             if (data.success) {
                 // Reload the table after a successful delete
-                fetchProducts();
+                fetchStockIn();
             } else {
-                console.error('Error deleting Supplier:', data.error);
+                console.error('Error1 deleting Stock In:', data.error);
+                fetchStockIn();
             }
         })
         .catch(error => {
-            console.error('Error deleting Supplier:', error);
+            console.error('Error2 deleting Stock In:', error);
+            fetchStockIn();
         });
 }
 

@@ -15,7 +15,7 @@ if (isset($_POST["categoryhome"])) {
 				<div id='responsive-nav'>
 					<!-- NAV -->
 					<ul class='main-nav nav navbar-nav'>
-                    <li class='active'><a href='index.php'>Home</a></li>
+                    <li class='active'><a href='store.php'>Home</a></li>
                     <li><a href='store.php'>Electronics</a></li>
 	";
 	if (mysqli_num_rows($run_query) > 0) {
@@ -23,7 +23,7 @@ if (isset($_POST["categoryhome"])) {
 			$cid = $row["CatID"];
 			$cat_name = $row["CategoryName"];
 
-			$sql = "SELECT COUNT(*) AS count_items FROM Product, Category WHERE Product.CatID = Category.CatID;";
+			$sql = "SELECT COUNT(*) AS count_items FROM Product WHERE Product.CatID = '$cid';";
 			$query = mysqli_query($con, $sql);
 			$row = mysqli_fetch_array($query);
 			$count = $row["count_items"];
@@ -144,7 +144,7 @@ if (isset($_POST["gethomeProduct"])) {
 	}
 }
 
-if (isset($_POST["get_seleted_Category"]) ) {
+if (isset($_POST["get_seleted_Category"])) {
 	if (isset($_POST["get_seleted_Category"])) {
 		$id = $_POST["cat_id"];
 		$sql = "SELECT * FROM Product, Category WHERE Product.CatID = '$id' AND Product.CatID=Category.CatID";

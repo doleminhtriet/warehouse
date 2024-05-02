@@ -26,6 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['action']) && $_GET['act
 }
 
 
+
+
 //Get All Category
 if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['action']) && $_GET['action'] === 'getAllCategory') {
 
@@ -61,6 +63,29 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['action']) && $_GET['act
         echo json_encode($products);
     } else {
         echo json_encode(array('error' => 'Error executing the query: ' . $con->error));
+    }
+}
+
+//Get All Product
+if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['action']) && $_GET['action'] === 'deleteProduct') {
+
+    // Check if the product ID is provided in the query parameters
+    if (isset($_GET['id'])) {
+        $productId = $_GET['id'];
+    
+        // SQL query to delete the product
+        $deleteSql = "DELETE FROM Product WHERE ProductID = $productId";
+        
+        if ($con->query($deleteSql)) {
+            // Product deleted successfully
+            echo json_encode(array('success' => 'Product deleted successfully.'));
+        } else {
+            // Error deleting the product
+            echo json_encode(array('error' => 'Error deleting the product: ' . $conn->error));
+        }
+    } else {
+        // Product ID not provided in the query parameters
+        echo json_encode(array('error' => 'Product ID not provided.'));
     }
 }
 
@@ -125,6 +150,26 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['action']) && $_GET['act
     }
 }
 
+if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['action']) && $_GET['action'] === 'deleteCategory') {
+    if (isset($_GET['id'])) {
+        $catID = $_GET['id'];
+
+        // SQL query to delete the supplier
+        $deleteSql = "DELETE FROM Category WHERE CatID = $catID";
+
+        if ($con->query($deleteSql)) {
+            // Supplier deleted successfully
+            echo json_encode(array('success' => 'Category deleted successfully.'));
+        } else {
+            // Error deleting the supplier
+            echo json_encode(array('error' => 'Error deleting the Category: ' . $con->error));
+        }
+    } else {
+        // Supplier ID not provided in the query parameters
+        echo json_encode(array('error' => 'Category ID not provided.'));
+    }
+}
+
 // Handle listSupplier action
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'updateSupplier') {
     $supplierId = $_POST['supplier_id'];
@@ -152,7 +197,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     $date = $_POST['date'];
     $note = $_POST['note'];
     $status = $_POST['status'];
-    $orderID = $_POST['orderID'];
     $supplierID = $_POST['supplierID'];
 
     $sql = "INSERT INTO StockIn (UserID, StockDate, StockNote, StockStatus, SupplierID)
@@ -178,9 +222,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         }
 
         echo "Stock-in data saved successfully!";
-        header('Refresh: 1; URL=Supplier.php');
+        header('Refresh: 1; URL=InStock.php');
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($con);
+    }
+}
+
+//Delete StockIN
+if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['action']) && $_GET['action'] === 'deleteInStock') {
+    if (isset($_GET['id'])) {
+        $stockInId = $_GET['id'];
+
+        // SQL query to delete the stockIn details first
+        $sqlDeleteChild = "DELETE FROM StockInDetail WHERE StockInId = $stockInId";
+        echo  $sqlDeleteChild;
+        if ($con->query($sqlDeleteChild)) {
+            // Now delete the main stockIn entry
+            $deleteSql = "DELETE FROM StockIn WHERE StockId = $stockInId";
+            if ($con->query($deleteSql)) {
+                // StockIn deleted successfully
+                echo json_encode(array('success' => 'StockIn deleted successfully.'));
+            } else {
+                // Error deleting the main stockIn
+                echo json_encode(array('error' => 'Error deleting the main StockIn: ' . $con->error));
+            }
+        } else {
+            // Error deleting the stockIn details
+            echo json_encode(array('error' => 'Error deleting the stockIn details: ' . $con->error));
+        }
+    } else {
+        // StockIn ID not provided in the query parameters
+        echo json_encode(array('error' => 'StockIn ID not provided.'));
     }
 }
 
