@@ -74,7 +74,29 @@ include "admFunctions.php";
     </style>
 </head>
 
+
 <body>
+
+<?php
+    // Include your database connection file
+    include '../db.php';
+
+    // Check if the category ID is provided in the URL
+    if (isset($_GET['id'])) {
+        $stockID = $_GET['id'];
+
+        // Fetch category data based on the category ID
+        $sql = "SELECT * FROM StockIn WHERE StockId = $stockID";
+        $result = $con->query($sql);
+
+        if ($result->num_rows > 0) {
+            // Adjust this based on your actual data structure
+            $row = $result->fetch_assoc();
+            $supplierID= $row['SupplierID'];
+            $stockDate = $row['StockDate'];
+            $stockNote = $row['StockNote'];
+            $stockStatus = $row['StockStatus'];
+?>
 
     <header>
         <h1>Stock-In Form</h1>
@@ -143,10 +165,10 @@ include "admFunctions.php";
             <select id="supplierSelect" name="supplierID"></select>
 
             <label for="date">Date:</label>
-            <input type="date" id="date" name="date" required>
+            <input type="date" id="date" name="date" value="<?= htmlspecialchars($stockDate) ?>" required>
 
             <label for="note">Note:</label>
-            <textarea id="note" name="note" required></textarea>
+            <textarea id="note" name="note" required value="<?= htmlspecialchars($stockNote) ?>" ></textarea>
 
             <label for="status">Status:</label>
             <select name="status" id="status">

@@ -46,7 +46,9 @@
         </nav>
     
     <div class="container">
-        <form action="updateCategory.php" method="post" enctype="multipart/form-data">
+        <form action="admFunctions.php" method="post" enctype="multipart/form-data">
+
+            <input type="hidden" name="action" value="updateCategory">
         
             <input type="hidden" id="category_id" name="category_id" value=<?php echo $categoryId; ?> >
             

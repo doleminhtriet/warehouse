@@ -75,6 +75,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     }
 }
 
+//Update Product
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'updateProduct') {
+    $productId = $_POST['product_id'];
+    $productName = $_POST['product_name'];
+    $price = $_POST['price'];
+    $qty = $_POST['quantity'];
+    $description = $_POST['description'];
+
+    // Check if a picture file is uploaded
+    if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
+        $pictureData = file_get_contents($_FILES['picture']['tmp_name']);
+        $base64Picture = base64_encode($pictureData);
+
+        // SQL query to insert product data into the database
+        $updateSql = "UPDATE Product SET ProductName = '$productName', ProductPrice = $price, 
+        ProductQTY = $qty ,ProductDescription = '$description', ProductImage = '$base64Picture'  WHERE ProductID = $productId";
+
+        if ($con->query($updateSql)) {
+            echo "Product updated successfully!";
+            header('Refresh: 1; URL=index.php');
+        } else {
+            echo "Error updating product: " . $con->error;
+        }
+    } else {
+        echo "Error uploading picture.";
+    }
+}
+
 //Get All Product
 if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['action']) && $_GET['action'] === 'getAllProduct') {
 
@@ -196,6 +224,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             header('Refresh: 1; URL=Category.php');
         } else {
             echo "Error adding category: " . $con->error;
+        }
+    } else {
+        echo "Error uploading picture.";
+    }
+}
+
+//update Category
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'updateCategory') {
+    $categoryId = $_POST['category_id'];
+    $categoryName = $_POST['category_name'];
+    $description = $_POST['description'];
+
+    // Check if a picture file is uploaded
+    if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
+        $pictureData = file_get_contents($_FILES['picture']['tmp_name']);
+        $base64Picture = base64_encode($pictureData);
+
+        // SQL query to insert category data into the database
+        $updateSql = "UPDATE Category SET CategoryName = '$categoryName', CategoryDescription = '$description', 
+        CategoryImage = '$base64Picture' WHERE CatID = $categoryId";
+
+        if ($con->query($updateSql)) {
+            echo "Category updated successfully!";
+            header('Refresh: 1; URL=Category.php');
+        } else {
+            echo "Error updating category: " . $con->error;
         }
     } else {
         echo "Error uploading picture.";

@@ -39,15 +39,15 @@
             </header>
 
             <nav>
-            <a href="index.php" class="products">Products</a>
-        <a href="Category.php" class="category">Category</a>
-        <a href="Supplier.php" class="supply">Supply</a>
-        <a href="add_stockIn.php" class="stock">Stock In</a>
+                <a href="index.php" class="products">Products</a>
+                <a href="Category.php" class="category">Category</a>
+                <a href="Supplier.php" class="supply">Supply</a>
+                <a href="add_stockIn.php" class="stock">Stock In</a>
             </nav>
 
             <div class="container">
                 <form action="admFunctions.php" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="action" value="updateSupplier">
+                    <input type="hidden" name="action" value="updateSupplier">
                     <input type="hidden" name="supplier_id" value="<?php echo $supplierId; ?>">
                     <label for="supplier_name">Supplier Name:</label>
                     <input type="text" name="supplier_name" required value="<?php echo htmlspecialchars($supplierName); ?>">
@@ -57,7 +57,7 @@
                     <input type="text" name="address" required value="<?php echo htmlspecialchars($address); ?>">
                     <label for="phone">Phone:</label>
                     <input type="text" name="phone" required value="<?php echo htmlspecialchars($phone); ?>">
-                   
+
                     <br><br>
                     <input type="submit" value="Update Supplier">
                 </form>

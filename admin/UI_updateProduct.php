@@ -51,7 +51,9 @@
         </nav>
     
     <div class="container">
-        <form action="updateProduct.php" method="post" enctype="multipart/form-data">
+        <form action="admFunctions.php" method="post" enctype="multipart/form-data">
+
+            <input type="hidden" name="action" value="updateProduct">
         
             <input type="hidden" id="product_id" name="product_id" value=<?php echo $productId; ?> >
             
@@ -59,7 +61,7 @@
             <input type="text" name="product_name" required value='<?php echo $row['ProductName']; ?>'>
 
             <label for="price">Price:</label>
-            <input type="number" name="price" required value=<?php echo $price; ?> > 
+            <input type="number" name="price" required step="0.01" value=<?php echo $price; ?> > 
 
             <label for="quantity">Quantity:</label>
             <input type="number" name="quantity" required value=<?php echo $qty; ?> > 
