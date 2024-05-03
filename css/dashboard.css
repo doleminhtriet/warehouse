@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    background-color: rgb(242, 240, 240);
+    background-image: url('../warehouse-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Lato', sans-serif;
+    background-color: #9fbae2; /* Light grey background, adjust if needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Main container styling */
+.main-container {
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex; /* Make main-container a flex container */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Align children (including buttons) on the cross-axis (center) */
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 32px;
+}
+
+/* Header styles */
+.header {
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+/* Button styles */
+.btn {
+    display: block;
+    width: 100%; /* Full width buttons */
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 18px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    text-align: center; /* Ensure text within buttons is centered */
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+#user-btn {
+    background: linear-gradient(135deg, #6a82fb, #383be0);
+    color: rgb(242, 241, 240);
+    font-weight: bold;
+}
+
+#staff-btn {
+    background: linear-gradient(135deg, #fa275c, #b95468);
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main-container {
+        width: 100%;
+    }
+}

@@ -162,6 +162,7 @@ include "admFunctions.php";
                         <th>Quantity</th>
                         <th>Price</th>
                         <th>Total</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -170,6 +171,7 @@ include "admFunctions.php";
                         <td><input type="number" name="quantity[]" required onchange="calculateTotal(this)"></td>
                         <td><input type="number" name="price[]" required onchange="calculateTotal(this)"></td>
                         <td><input type="text" name="total[]" readonly></td>
+                        <td><button type="button" onclick="removeRow(this)">Remove</button>'</td>
                     </tr>
                 </tbody>
             </table>
@@ -187,10 +189,13 @@ include "admFunctions.php";
             var cell2 = newRow.insertCell(1);
             var cell3 = newRow.insertCell(2);
             var cell4 = newRow.insertCell(3);
+            var cell5 = newRow.insertCell(4);
             cell1.innerHTML = '<select name="productID[]" required></select>';
             cell2.innerHTML = '<input type="number" name="quantity[]" required onchange="calculateTotal(this)">';
             cell3.innerHTML = '<input type="number" name="price[]" required onchange="calculateTotal(this)">';
             cell4.innerHTML = '<input type="text" name="total[]" readonly>';
+            cell5.innerHTML = '<button type="button" onclick="removeRow(this)">Remove</button>'; // Button to remove row
+
 
             // Populate the newly added combobox with product data
             var productSelect = cell1.querySelector('select');
@@ -248,6 +253,13 @@ include "admFunctions.php";
             })
             .catch(error => console.error('Error fetching Products:', error));
     }
+
+
+    function removeRow(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+
 </script>
 
 </html>

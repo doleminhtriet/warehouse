@@ -70,7 +70,7 @@
         tableBody.innerHTML = '';
 
         // Add new rows with product data
-        products.forEach(function(supplier) {
+        products.forEach(function(stock) {
             var row = tableBody.insertRow();
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
@@ -82,16 +82,16 @@
             var cell8 = row.insertCell(7);
         
 
-            cell1.innerHTML = supplier.StockId;
-            cell2.innerHTML = supplier.SupplierName;
-            cell3.innerHTML = supplier.FullName;
-            cell4.innerHTML = supplier.StockDate;
-            cell5.innerHTML = supplier.StockStatus;
-            cell6.innerHTML = supplier.TotalAmt;
+            cell1.innerHTML = stock.StockId;
+            cell2.innerHTML = stock.SupplierName;
+            cell3.innerHTML = stock.FullName;
+            cell4.innerHTML = stock.StockDate;
+            cell5.innerHTML = stock.StockStatus;
+            cell6.innerHTML = stock.TotalAmt;
 
              // Add update link
              var updateLink = document.createElement('a');
-            updateLink.href = 'UI_updateSupplier.php?id=' + supplier.StockId; // Update this line
+            updateLink.href = 'UI_updateStock.php?id=' + stock.StockId; // Update this line
             updateLink.textContent = 'Update';
 
 
@@ -104,7 +104,7 @@
                 // For simplicity, this example uses a confirmation dialog
                 var confirmDelete = confirm('Are you sure you want to delete this Record?');
                 if (confirmDelete) {
-                    deleteInstock(supplier.StockId);
+                    deleteInstock(stock.StockId);
                 }
                 return false; // Prevent the default link behavior
             };

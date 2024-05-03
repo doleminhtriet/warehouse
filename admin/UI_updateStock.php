@@ -77,9 +77,11 @@ include "admFunctions.php";
 
 <body>
 
-<?php
+    <?php
     // Include your database connection file
     include '../db.php';
+
+    $products = [];
 
     // Check if the category ID is provided in the URL
     if (isset($_GET['id'])) {
@@ -92,11 +94,30 @@ include "admFunctions.php";
         if ($result->num_rows > 0) {
             // Adjust this based on your actual data structure
             $row = $result->fetch_assoc();
-            $supplierID= $row['SupplierID'];
+            $supplierID = $row['SupplierID'];
             $stockDate = $row['StockDate'];
             $stockNote = $row['StockNote'];
             $stockStatus = $row['StockStatus'];
-?>
+
+            $sqlStockDetail = "SELECT ProductID, ProductName FROM Product";
+            if ($resultDetail = $con->query($sqlStockDetail)) {
+                while ($row = $resultDetail->fetch_assoc()) {
+                    $products[] = $row;
+                }
+            }
+
+            // Fetch existing stock details if we are editing an existing entry
+            $stockDetails = [];
+
+            $detailQuery = "SELECT * FROM V_StockProductDetail WHERE StockInId = $stockID";
+            if ($detailResult = $con->query($detailQuery)) {
+                while ($detailRow = $detailResult->fetch_assoc()) {
+                    $stockDetails[] = $detailRow;
+                }
+            }
+        }
+    }
+    ?>
 
     <header>
         <h1>Stock-In Form</h1>
@@ -155,7 +176,9 @@ include "admFunctions.php";
     <div class="container">
         <form action="admFunctions.php" method="post">
 
-            <input type="hidden" name="action" value="addStockIn">
+            <input type="hidden" name="stockID" value="<?php echo $stockID; ?>">
+
+            <input type="hidden" name="action" value="updateStockIn">
 
             <label for="userID">User ID:</label>
             <input type="text" id="userID" name="userID" required value='<?php echo $_SESSION["uid"]; ?>' readonly>
@@ -168,12 +191,14 @@ include "admFunctions.php";
             <input type="date" id="date" name="date" value="<?= htmlspecialchars($stockDate) ?>" required>
 
             <label for="note">Note:</label>
-            <textarea id="note" name="note" required value="<?= htmlspecialchars($stockNote) ?>" ></textarea>
+
+            <textarea id="note" name="note" required><?php echo htmlspecialchars($stockNote); ?></textarea>
+
 
             <label for="status">Status:</label>
             <select name="status" id="status">
-                <option value="sent">Sent</option>
-                <option value="received">Received</option>
+                <option value="sent" <?php if ($stockStatus == 'sent') echo 'selected'; ?>>Sent</option>
+                <option value="received" <?php if ($stockStatus == 'received') echo 'selected'; ?>>Received</option>
             </select>
 
             <h3>Stock-In Detail</h3>
@@ -184,15 +209,13 @@ include "admFunctions.php";
                         <th>Quantity</th>
                         <th>Price</th>
                         <th>Total</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td><select name="productID[]" required></select></td>
-                        <td><input type="number" name="quantity[]" required onchange="calculateTotal(this)"></td>
-                        <td><input type="number" name="price[]" required onchange="calculateTotal(this)"></td>
-                        <td><input type="text" name="total[]" readonly></td>
-                    </tr>
+                <tbody id="tableBody">
+
+                    <!-- Initially empty -->
+
                 </tbody>
             </table>
             <button type="button" onclick="addRow()">Add Row</button><br><br>
@@ -201,42 +224,22 @@ include "admFunctions.php";
         </form>
     </div>
 
-    <script>
-        function addRow() {
-            var table = document.getElementById("stockInDetail").getElementsByTagName('tbody')[0];
-            var newRow = table.insertRow();
-            var cell1 = newRow.insertCell(0);
-            var cell2 = newRow.insertCell(1);
-            var cell3 = newRow.insertCell(2);
-            var cell4 = newRow.insertCell(3);
-            cell1.innerHTML = '<select name="productID[]" required></select>';
-            cell2.innerHTML = '<input type="number" name="quantity[]" required onchange="calculateTotal(this)">';
-            cell3.innerHTML = '<input type="number" name="price[]" required onchange="calculateTotal(this)">';
-            cell4.innerHTML = '<input type="text" name="total[]" readonly>';
-
-            // Populate the newly added combobox with product data
-            var productSelect = cell1.querySelector('select');
-            fetchAndPopulateProducts();
-        }
-
-        function calculateTotal(input) {
-            var row = input.parentNode.parentNode;
-            var quantity = parseFloat(row.cells[1].getElementsByTagName('input')[0].value);
-            var price = parseFloat(row.cells[2].getElementsByTagName('input')[0].value);
-            var total = quantity * price;
-            row.cells[3].getElementsByTagName('input')[0].value = total.toFixed(2);
-        }
-    </script>
 
 </body>
 <script>
+    var products = <?php echo json_encode($products); ?>;
+    var initialStockDetails = <?php echo json_encode($stockDetails); ?>;
+
     document.addEventListener('DOMContentLoaded', function() {
         fetchAndPopulateSuppliers();
+        //fetchAndPopulateProducts();
         fetchAndPopulateProducts();
+        populateInitialData();
     });
 
 
 
+    // Fetch suppliers and populate the combobox
     function fetchAndPopulateSuppliers() {
         fetch('admFunctions.php?action=getAllSupplier')
             .then(response => response.json())
@@ -253,6 +256,7 @@ include "admFunctions.php";
             .catch(error => console.error('Error fetching Suppliers:', error));
     }
 
+    // Fetch products and populate the comboboxes
     function fetchAndPopulateProducts() {
         fetch('admFunctions.php?action=getAllProduct')
             .then(response => response.json())
@@ -269,6 +273,67 @@ include "admFunctions.php";
                 });
             })
             .catch(error => console.error('Error fetching Products:', error));
+    }
+
+
+    // Fetch products detail
+    function populateInitialData() {
+        var table = document.getElementById('stockInDetail').getElementsByTagName('tbody')[0];
+        initialStockDetails.forEach(function(detail) {
+            var row = table.insertRow();
+            row.innerHTML = `
+                <td><select name="productID[]" required>${generateOptions(detail.ProductID)}</select></td>
+                <td><input type="number" name="quantity[]" value="${detail.Quantity}" required onchange="calculateTotal(this)"></td>
+                <td><input type="number" name="price[]" value="${detail.Price}" required onchange="calculateTotal(this)"></td>
+                <td><input type="text" name="total[]" value="${detail.TotalAmt}" readonly></td>
+                <td><button type="button" onclick="removeRow(this)">Remove</button>'</td>
+            `;
+        });
+
+    }
+
+
+    // Add a new row to the stock-in detail table
+    function addRow() {
+        var table = document.getElementById("stockInDetail").getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow();
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+        var cell4 = newRow.insertCell(3);
+        var cell5 = newRow.insertCell(4);
+        cell1.innerHTML = '<select name="productID[]" required></select>';
+        cell2.innerHTML = '<input type="number" name="quantity[]" required onchange="calculateTotal(this)">';
+        cell3.innerHTML = '<input type="number" name="price[]" required onchange="calculateTotal(this)">';
+        cell4.innerHTML = '<input type="text" name="total[]" readonly>';
+        cell5.innerHTML = '<button type="button" onclick="removeRow(this)">Remove</button>'; // Button to remove row
+
+
+        // Populate the newly added combobox with product data
+        var productSelect = cell1.querySelector('select');
+        fetchAndPopulateProducts();
+    }
+
+    function calculateTotal(input) {
+        var row = input.parentNode.parentNode;
+        var quantity = parseFloat(row.cells[1].getElementsByTagName('input')[0].value);
+        var price = parseFloat(row.cells[2].getElementsByTagName('input')[0].value);
+        var total = quantity * price;
+        row.cells[3].getElementsByTagName('input')[0].value = total.toFixed(2);
+    }
+
+
+    // Generate options for the product combobox
+    function generateOptions(selectedId) {
+        return products.map(product => `
+            <option value="${product.ProductID}" ${product.ProductID == selectedId ? 'selected' : ''}>${product.ProductName}</option>
+        `).join('');
+    }
+
+    // Remove the row from the stock-in detail table
+    function removeRow(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
     }
 </script>
 

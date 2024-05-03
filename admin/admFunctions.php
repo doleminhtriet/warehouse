@@ -128,10 +128,10 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['action']) && $_GET['act
     // Check if the product ID is provided in the query parameters
     if (isset($_GET['id'])) {
         $productId = $_GET['id'];
-    
+
         // SQL query to delete the product
         $deleteSql = "DELETE FROM Product WHERE ProductID = $productId";
-        
+
         if ($con->query($deleteSql)) {
             // Product deleted successfully
             echo json_encode(array('success' => 'Product deleted successfully.'));
@@ -359,6 +359,62 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['action']) && $_GET['act
     } else {
         // StockIn ID not provided in the query parameters
         echo json_encode(array('error' => 'StockIn ID not provided.'));
+    }
+}
+
+
+// Handle StockIn form add new
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'updateStockIn') {
+    // Process the parent form data
+    $stockId = $_POST['stockID'];
+    $userID = $_POST['userID'];
+    $date = $_POST['date'];
+    $note = $_POST['note'];
+    $status = $_POST['status'];
+    $supplierID = $_POST['supplierID'];
+
+    $sql = "UPDATE StockIn 
+        SET UserID = '$userID', 
+            StockDate = '$date', 
+            StockNote = '$note', 
+            StockStatus = '$status', 
+            SupplierID = '$supplierID'
+        WHERE StockId = $stockId";
+
+
+
+    if ($con->query($sql)) {
+
+
+        // SQL query to delete the stockIn details first
+        $sqlDeleteChild = "DELETE FROM StockInDetail WHERE StockInId = $stockId";
+        
+        if ($con->query($sqlDeleteChild)) {
+
+            // Process the child form data (stock-in detail)
+            $productIDs = $_POST['productID'];
+            $quantities = $_POST['quantity'];
+            $prices = $_POST['price'];
+            $totals = $_POST['total']; // Assuming you're also submitting the total from the form
+
+            foreach ($productIDs as $key => $productID) {
+                $quantity = $quantities[$key];
+                $price = $prices[$key];
+                $total = $totals[$key]; // Get total from submitted data
+
+                $sql = "INSERT INTO StockInDetail (StockInId, ProductID, Quantity, Price, Total)
+        VALUES ($stockId, '$productID', $quantity, $price, $total)";
+                mysqli_query($con, $sql);
+            }
+
+            echo "Stock-in data saved successfully!";
+            header('Refresh: 1; URL=InStock.php');
+        } else {
+            // Error deleting the stockIn details
+            echo json_encode(array('error' => 'Error deleting the stockIn details: ' . $con->error));
+        }
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($con);
     }
 }
 

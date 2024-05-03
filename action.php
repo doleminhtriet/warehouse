@@ -156,7 +156,7 @@
 
 			$user_id = $_SESSION["uid"];
 
-			$sql = "SELECT * FROM Cart WHERE ProducID = '$p_id' AND UserID = '$user_id'";
+			$sql = "SELECT * FROM Cart WHERE ProductID = '$p_id' AND UserID = '$user_id'";
 			$run_query = mysqli_query($con, $sql);
 			$count = mysqli_num_rows($run_query);
 

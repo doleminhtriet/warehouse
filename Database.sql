@@ -143,10 +143,22 @@ SELECT a.ProductID,a.ProductName,a.ProductPrice,a.ProductImage, b.CartID, b.Cart
 FROM Product a,Cart b WHERE a.ProductID=b.ProductID 
 select * from CustomerInfo
 select * from OrderInfo
+SELECT * FROM Supplier
+SELECT * FROM V_StockInAll
 select * from StockInDetail
 select * from Supplier
 select * from Product
 select * from StockInDetail
 SELECT * FROM Supplier
+select * from Category
 
 SELECT * FROM CustomerInfo WHERE Email = 'minh@yahoo.com' AND Password = '1111111111'
+
+SELECT * FROM Product, Category WHERE Product.CatID = Category.CatID 
+SELECT * FROM Product, Category WHERE Product.CatID = '' AND Product.CatID=Category.CatID
+DELETE FROM Category WHERE CatID ='6'
+
+CREATE VIEW V_StockProductDetail AS
+select  Product.ProductID,  Product.ProductName, StockInDetail.Quantity, 
+StockInDetail.Price, (StockInDetail.Quantity* StockInDetail.Price) as TotalAmt
+from Product inner join StockInDetail on StockInDetail.ProductID = Product.ProductID
